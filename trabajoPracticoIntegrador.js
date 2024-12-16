@@ -137,29 +137,62 @@ let usuarios = [
 // Implementar una función agregarLibro(id, titulo, autor, anio, genero) que agregue un nuevo libro al array libros.
 
 // Funcion que agrega libros al array mediante prompt
-let agregarLibro = (id, titulo, autor, anio, genero) => {
-    id = libros.lenght + 1;
-    titulo = prompt("Ingrese el titulo del libro: ");
-    autor = prompt("Ingrese el nombre del autor: ")
-    anio = parseInt(prompt("Ingrese el año del libro: "))
-    genero = prompt("Ingrese el genero del libro: ")
 
+
+let agregarLibro = (cantidad) => {
+    for (let i = 0; i < cantidad; i++) {
+        id = libros.length + 1;
+        titulo = prompt("Ingrese el titulo del libro: ");
+        autor = prompt("Ingrese el nombre del autor: ")
+        anio = parseInt(prompt("Ingrese el año del libro: "))
+        genero = prompt("Ingrese el genero del libro: ")
     
-    if (!titulo || !autor || isNaN(anio) || anio <= 0 || !genero) {
-        console.log("Datos invalidos, ingreselos nuevamente");
+        
+        if (!titulo || !autor || isNaN(anio) || anio <= 0 || !genero) {
+            console.log("Datos invalidos, ingreselos nuevamente");
+            }
+        let nuevoLibro = {
+            id: id,
+            titulo: titulo,
+            autor: autor,
+            anio: anio,
+            genero: genero,
+            disponible: true
         }
-    let nuevoLibro = {
-        id: id,
-        titulo: titulo,
-        autor: autor,
-        anio: anio,
-        genero: genero,
-        disponible: true
+        libros.push(nuevoLibro)
+        console.log("Libro agregado", nuevoLibro);
     }
-    libros.push(nuevoLibro)
-    console.log("Libro agregado", nuevoLibro);
 }
 
+
+let buscarLibro = () => {
+    let criterio = prompt("Ingrese el criterio de la busqueda entre: titulo, autor o genero: ").toLowerCase();
+    let valorBusqueda = prompt(`ingrese el ${criterio} del libro que desea buscar: `).toLowerCase();
+
+    let resultados = [];
+    
+    for (let i=0; i < libros.length; i++) {
+        let coincide = false;
+
+        switch (criterio) {
+            case "titulo":
+                coincide = libros[i].titulo.toLowerCase().includes(valorBusqueda);
+                break;
+            case "autor":
+                coincide = libros[i].autor.toLowerCase().includes(valorBusqueda);
+                break;
+            case "genero":
+                coincide = libros[i].genero.toLowerCase().includes(valorBusqueda);
+                break;
+            }
+            if (coincide) {
+                resultados.push(libros[i]);
+        }
+    }
+    if (resultados.length > 0 ) {
+        console.log("Libros encontrados: ", resultados);
+    }
+}
 // Desarrollar una función ordenarLibros(criterio) que ordene los libros por título o año utilizando el algoritmo de ordenamiento burbuja (bubble sort) y luego muestre los libros ordenados en la consola.
 
 // No termine de entender mucho como funciona esto, me ayude con la IA para poder completarlo asi que no sabria como explicarlo bien
@@ -393,7 +426,12 @@ let menuPrincipal = () => {
                 borrarUsuario(borrarNombre,borrarEmail); // llamada a la funcion con sus parametros
                 break;//rompe el ciclo si el numero ingresado es 4
                 case "5":
-                agregarLibro() // llamada a la funcion 
+                    let cantidadLibros = parseInt(prompt("Cuantos libros queres agregar?: "));
+                    if (!isNaN(cantidadLibros) && cantidadLibros > 0) {
+                        agregarLibro(cantidadLibros);
+                    } else {
+                        console.log("Numero invalido, prueba nuevamente");
+                    } 
                 break;//rompe el ciclo si el numero ingresado es 5
                 case "6":
                 let id = parseInt(prompt("Ingrese el ID del libro a borrar: ")); //prompt para agregar el id del libro a borrar
@@ -426,6 +464,9 @@ let menuPrincipal = () => {
                 case "13":
                 console.log("Los datos se han normalizado correctamente", normalizarDatos());//log llamando a la funcion
                 break;//rompe el ciclo si el numero ingresado es 13
+                case "14":
+                buscarLibro();
+                break;
                 case "0":
                 console.log("Saliendo del sistema");//log salir del sistema
                 break;//rompe el ciclo si el numero ingresado es 0
