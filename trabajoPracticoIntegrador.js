@@ -281,7 +281,7 @@ let prestarLibro = (idLibro, idUsuario) => {
     let usuario = usuarios.find(usuario => usuario.id === idUsuario);
     if (libro && libro.disponible && usuario) {
         libro.disponible = false;
-        usuario.librosPrestados.push(libro.titulo);
+        usuario.librosPrestados.push(libro);
     } else {
         console.log("El libro no esta disponible");
         
